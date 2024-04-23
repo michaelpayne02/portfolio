@@ -12,12 +12,21 @@ import astro from '../assets/about-astro.png'
 
 import { getAllPosts, sortMDByDate } from '@/utils'
 
-const languages = ['lorem', 'ipsum']
-const frontend = ['lorem', 'ipsum', 'lorem', 'ipsum', 'lorem', 'ipsum', 'lorem']
-const backend = ['lorem', 'ipsum', 'lorem', 'ipsum']
-const others = ['lorem', 'ipsum', 'lorem', 'ipsum', 'lorem']
+const languages = ['Python', 'Typescript', 'Java', 'Kotlin', 'PHP', 'SQL', 'Go']
+const software = ['Creative Cloud', 'Blender', 'Linux', 'VMware ESXi', 'MS Office']
+const tools = [
+	'Docker',
+	'Terraform',
+	'React',
+	'NextJS',
+	'Kubernetes',
+	'Gitops',
+	'CI/CD',
+	'AWS',
+	'Azure'
+]
 
-const MAX_POSTS = 10
+const MAX_POSTS = 4
 const allPosts = await getAllPosts()
 const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 ---
@@ -137,33 +146,41 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 
 		<Section title='Education'>
 			<Card
-				heading='Lorem Ipsum'
-				subheading='Sit amet consectetur'
-				date='Dec 2022 - Nov 2023'
+				heading='University of Nebraska-Lincoln'
+				subheading='Major: Finance; Minor: Computer Science'
+				date='Aug 2022 - Current'
 				imagePath='/src/assets/about-astro.png'
 				altText='Lorem, ipsum dolor sit'
 				imageClass='h-12 w-auto md:-left-16'
 			>
 				<ul class='ml-4 list-disc text-muted-foreground'>
 					<li>
-						Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolore debitis recusandae, ut
-						molestiae laboriosam pariatur!
-
-						<li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae, pariatur!</li>
+						GPA:
+						<span class='font-firacode'>3.86/4.00</span>
 					</li>
 				</ul>
 			</Card>
-			<Card
-				heading='Lorem Ipsum'
-				subheading='Sit amet consectetur'
-				date='Dec 2022 - Nov 2023'
-				imagePath='/src/assets/about-astro.png'
-				altText='Lorem, ipsum dolor sit'
-				imageClass='h-12 w-auto md:-left-16'
-			/>
 		</Section>
 
-		<Section title='Projects'>
+		<Section title='Designs'>
+			<div class='flex flex-col gap-y-3 sm:flex-row sm:gap-x-3 sm:gap-y-0'>
+				<ProjectCard
+					href='/du-open'
+					heading='Consectetur'
+					subheading='Lorem ipsum dolor sit amet consectetur adipisicing elit.'
+					imagePath='/src/assets/coming-soon.png'
+					altText='Example'
+					class='w-full sm:w-1/2'
+				/>
+				<ProjectCard
+					as='div'
+					heading='Coming soon...'
+					subheading=''
+					imagePath='/src/assets/coming-soon.png'
+					altText='Lorem, ipsum dolor sit'
+					class='w-full sm:w-1/2'
+				/>
+			</div>
 			<div class='flex flex-col gap-y-3 sm:flex-row sm:gap-x-3 sm:gap-y-0'>
 				<ProjectCard
 					href='https://www.google.com'
@@ -208,10 +225,9 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 		</Section>
 
 		<Section title='Skills'>
+			<SkillLayout title='Software' skills={software} />
 			<SkillLayout title='Languages' skills={languages} />
-			<SkillLayout title='Frontend' skills={frontend} />
-			<SkillLayout title='Backend' skills={backend} />
-			<SkillLayout title='Others' skills={others} />
+			<SkillLayout title='Tools' skills={tools} />
 		</Section>
 	</div>
 	<a
