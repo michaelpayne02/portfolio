@@ -4,6 +4,7 @@ name = "portfolio"
 binding = "DB"
 database_name = "portfolio"
 database_id = ""
+preview_database_id = "DB"
 
 [vars]
 ACCOUNT_ID = ""

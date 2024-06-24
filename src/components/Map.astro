@@ -1,0 +1,52 @@
+---
+type Props = {
+  className: string
+  latitude: number
+  longitude: number
+  zoom: number
+  mapStyle: string
+  interactive?: boolean
+}
+
+const {
+  className,
+  latitude,
+  longitude,
+  zoom,
+  mapStyle,
+  interactive = false
+} = Astro.props
+---
+
+<maplibre-map
+  data-latitude={latitude}
+  data-longitude={longitude}
+  data-zoom={zoom}
+  data-mapstyle={mapStyle}
+  data-interactive={interactive}
+>
+  <div id='map' class:list={[className]}></div>
+</maplibre-map>
+
+<script>
+  import maplibregl from 'maplibre-gl'
+  class MapLibreMap extends HTMLElement {
+    constructor() {
+      super()
+      console.log(this.dataset.interactive)
+
+      new maplibregl.Map({
+        container: 'map',
+        interactive: this.dataset.interactive != undefined,
+        center: [
+          parseFloat(this.dataset.longitude as string),
+          parseFloat(this.dataset.latitude as string)
+        ],
+        zoom: parseFloat(this.dataset.zoom as string),
+        style: this.dataset.mapstyle as string
+      })
+    }
+  }
+
+  window.customElements.define('maplibre-map', MapLibreMap)
+</script>
