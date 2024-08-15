@@ -13,7 +13,7 @@ import { og } from './src/utils/opengraph';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://www.mikepayne.me',
-  integrations: [sitemap(), pagefind(), mdx(), tailwind({
+  integrations: [setPrerender(), sitemap(), pagefind(), mdx(), tailwind({
     applyBaseStyles: false
   }), og()],
   vite: {
@@ -42,6 +42,7 @@ export default defineConfig({
   prefetch: true,
   output: 'hybrid',
   experimental: {
+    contentIntellisense: true,
     actions: true,
     serverIslands: true,
     env: {
@@ -62,3 +63,19 @@ export default defineConfig({
     }
   })
 });
+
+
+function setPrerender() {
+
+  return {
+    name: 'set-prerender',
+    hooks: {
+      'astro:route:setup': ({ route }) => {
+        if (route.component.startsWith('src/pages/contact/') || route.component === 'src/components/blog/webmentions.astro') {
+          route.prerender = false;
+        }
+        route.prerender = true;
+      },
+    },
+  };
+}
