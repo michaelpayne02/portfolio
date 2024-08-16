@@ -17,9 +17,6 @@ export default defineConfig({
     applyBaseStyles: false
   }), og()],
   vite: {
-    ssr: {
-      external: ['node:async_hooks']
-    },
     plugins: [Icons({
       compiler: 'astro',
     })]
@@ -43,7 +40,6 @@ export default defineConfig({
   output: 'hybrid',
   experimental: {
     contentIntellisense: true,
-    actions: true,
     serverIslands: true,
     env: {
       schema: {
@@ -66,15 +62,11 @@ export default defineConfig({
 
 
 function setPrerender() {
-
   return {
     name: 'set-prerender',
     hooks: {
       'astro:route:setup': ({ route }) => {
-        if (route.component.startsWith('src/pages/contact/') || route.component === 'src/components/blog/webmentions.astro') {
-          route.prerender = false;
-        }
-        route.prerender = true;
+        route.prerender = !(route.component.startsWith('src/pages/contact/') || route.component === 'src/components/blog/webmentions.astro')
       },
     },
   };

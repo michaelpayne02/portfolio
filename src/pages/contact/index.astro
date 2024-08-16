@@ -37,7 +37,7 @@ const meta = {
     <div class='flex flex-col gap-y-7'>
       {
         result?.error && !isInputError(result.error) && (
-          <div class='text-red-500'>Unknown Error: {result?.error.message}</div>
+          <p class='text-red-500'>Unknown Error: {result?.error.message}</p>
         )
       }
       <form
@@ -49,13 +49,13 @@ const meta = {
           <span>Name</span>
           {
             inputErrors.fullName && (
-              <span class='text-red-500'>
+              <p class='text-red-500'>
                 Captcha error: {inputErrors.fullName.join(', ')}
-              </span>
+              </p>
             )
           }
           <input
-            transition:persist='name'
+            transition:persist
             required
             name='fullName'
             type='text'
@@ -67,7 +67,7 @@ const meta = {
           <span>Email address</span>
           {
             inputErrors.email && (
-              <span class='text-red-500'>{inputErrors.email.join(', ')}</span>
+              <p class='text-red-500'>{inputErrors.email.join(', ')}</p>
             )
           }
           <input
@@ -82,7 +82,7 @@ const meta = {
           <span>Message</span>
           {
             inputErrors.message && (
-              <span class='text-red-500'>{inputErrors.message.join(', ')}</span>
+              <p class='text-red-500'>{inputErrors.message.join(', ')}</p>
             )
           }
           <textarea
@@ -95,9 +95,9 @@ const meta = {
         </label>
         {
           inputErrors.turnstile && (
-            <span class='text-red-500'>
+            <p class='text-red-500'>
               Verificaion token: {inputErrors.turnstile.join(', ')}
-            </span>
+            </p>
           )
         }
         <div id='turnstile'></div>
