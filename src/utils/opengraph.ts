@@ -1,6 +1,6 @@
 // https://github.com/sdnts/dietcode/blob/914e3970f6a0f555113768b12db3229dd822e6f1/astro.config.ts
 
-import { access, copyFile, mkdir, writeFile, readFile } from 'fs/promises'
+import { access, open, copyFile, mkdir, writeFile, readFile } from 'fs/promises'
 import { siteConfig } from '../site.config'
 import { getFormattedDate } from './date'
 import type { AstroIntegration } from 'astro'
@@ -212,8 +212,9 @@ export const og = (): AstroIntegration => ({
         const { title, tags, publishDate, ogImage } = frontMatterData
         hash.update(JSON.stringify(frontMatterData))
 
-        const coverImage = (await readFile(ogImage))
-        hash.update(coverImage)
+        // Mix the cover image into the hash
+        const imageHandle = await open(ogImage, 'r')
+        imageHandle.createReadStream().pipe(hash)
 
         // Compute the cached file path and the corresponding path in the dist folder where it should be placed during build
         const digest = hash.digest('base64').substring(0, 10).replace('/', '_')
@@ -228,6 +229,7 @@ export const og = (): AstroIntegration => ({
         if (cacheHit) {
           await copyFile(cacheFilePath, outputFilePath)
         } else {
+          const coverImage = await readFile(ogImage)
           // Render our SVG. The `render` function returns the JSX object that we talked about. I've separated this out just to keep things easy to follow
           const jsx = render({ title, profileImage, tags, coverImage: coverImage, date: publishDate })
           // Convert the JSX to SVG using Satori

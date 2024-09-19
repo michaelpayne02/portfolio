@@ -66,7 +66,7 @@ function setPrerender() {
     name: 'set-prerender',
     hooks: {
       'astro:route:setup': ({ route }) => {
-        route.prerender = !(route.component.startsWith('src/pages/contact/') || route.component === 'src/components/blog/webmentions.astro')
+        route.prerender = !(route.component === 'src/components/blog/webmentions.astro' || route.component === 'src/pages/contact.astro');
       },
     },
   };

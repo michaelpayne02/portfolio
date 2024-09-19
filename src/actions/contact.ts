@@ -22,7 +22,7 @@ export default defineAction({
     email: z.string().email({ message: 'Please enter a valid email' }),
     message: z
       .string({ required_error: 'Please enter a message.' })
-      .min(5, { message: 'Message must be at least two characters long.' }),
+      .min(2, { message: 'Message must be at least two characters long.' }),
     turnstile: z.string({ required_error: 'Please complete verification.' }).max(2048, 'Turnstile response is invalid.')
   }),
   handler: async ({ fullName, message, email, turnstile }, ctx) => {
