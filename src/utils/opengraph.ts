@@ -9,6 +9,7 @@ import satori, { type SatoriOptions } from 'satori'
 import { Resvg, initWasm } from '@resvg/resvg-wasm'
 import { createHash } from 'crypto'
 import { join } from 'path'
+import { type Readable, PassThrough } from 'stream'
 
 const render = ({
   title,
@@ -207,6 +208,8 @@ export const og = (): AstroIntegration => ({
           `src/content/${page}.mdx`,
         ).catch(() => readFile(`src/content/${page}/index.mdx`))
 
+        const itemStart = performance.now()
+
         // 4. Parse frontmatter for our source file and extract important details
         const frontMatterData = parseFrontmatter(file).data
         const { title, tags, publishDate, ogImage } = frontMatterData
@@ -214,14 +217,24 @@ export const og = (): AstroIntegration => ({
 
         // Mix the cover image into the hash
         const imageHandle = await open(ogImage, 'r')
-        imageHandle.createReadStream().pipe(hash)
+        const imageStream = imageHandle.createReadStream()
+
+        const temp = performance.now()
+
+        const bufferStream = new PassThrough()
+        imageStream.pipe(hash)
+        imageStream.pipe(bufferStream)
+
+        const coverImage = await stream2Buffer(bufferStream)
+
+        const tempEnd = performance.now()
+
+        logger.info(`/${pathname} \x1b[90m (+${(tempEnd - temp).toFixed(0)}ms)\x1b[0m`)
 
         // Compute the cached file path and the corresponding path in the dist folder where it should be placed during build
         const digest = hash.digest('base64').substring(0, 10).replace('/', '_')
         const cacheFilePath = join(cachePath, `${digest}.png`)
         const outputFilePath = join(dir.pathname, pathname, 'og.png')
-
-        const itemStart = performance.now()
 
         const cacheHit = await access(cacheFilePath).then(() => true).catch(() => false)
 
@@ -229,7 +242,6 @@ export const og = (): AstroIntegration => ({
         if (cacheHit) {
           await copyFile(cacheFilePath, outputFilePath)
         } else {
-          const coverImage = await readFile(ogImage)
           // Render our SVG. The `render` function returns the JSX object that we talked about. I've separated this out just to keep things easy to follow
           const jsx = render({ title, profileImage, tags, coverImage: coverImage, date: publishDate })
           // Convert the JSX to SVG using Satori
@@ -255,3 +267,12 @@ export const og = (): AstroIntegration => ({
     }
   }
 })
+
+async function stream2Buffer(stream: Readable): Promise<Buffer> {
+  return new Promise<Buffer>((resolve, reject) => {
+    const _buf = Array<any>();
+    stream.on("data", chunk => _buf.push(chunk));
+    stream.on("end", () => resolve(Buffer.concat(_buf)));
+    stream.on("error", err => reject(`error converting stream - ${err}`));
+  });
+} 

@@ -24,9 +24,9 @@ const meta = {
 
 <script>
   import confetti from 'canvas-confetti'
+  const spinner = document.getElementById('spinner')
 
   document.addEventListener('astro:page-load', () => {
-    const spinner = document.getElementById('spinner')
     if (document.querySelectorAll('[data-confetti]').length > 0) confetti()
     document.getElementById('confetti')?.addEventListener('click', () => {
       confetti()
