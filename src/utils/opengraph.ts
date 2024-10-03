@@ -1,6 +1,6 @@
 // https://github.com/sdnts/dietcode/blob/914e3970f6a0f555113768b12db3229dd822e6f1/astro.config.ts
 
-import { access, open, copyFile, mkdir, writeFile, readFile } from 'fs/promises'
+import { access, copyFile, mkdir, writeFile, readFile } from 'fs/promises'
 import { siteConfig } from '../site.config'
 import { getFormattedDate } from './date'
 import type { AstroIntegration } from 'astro'
@@ -9,7 +9,6 @@ import satori, { type SatoriOptions } from 'satori'
 import { Resvg, initWasm } from '@resvg/resvg-wasm'
 import { createHash } from 'crypto'
 import { join } from 'path'
-import { type Readable, PassThrough } from 'stream'
 
 const render = ({
   title,
@@ -216,14 +215,9 @@ export const og = (): AstroIntegration => ({
         hash.update(JSON.stringify(frontMatterData))
 
         // Mix the cover image into the hash
-        const imageHandle = await open(ogImage, 'r')
-        const imageStream = imageHandle.createReadStream()
+        const coverImage = await readFile(ogImage)
 
-        const bufferStream = new PassThrough()
-        imageStream.pipe(hash)
-        imageStream.pipe(bufferStream)
-
-        const coverImage = await stream2Buffer(bufferStream)
+        hash.update(new Uint8Array(coverImage))
 
         // Compute the cached file path and the corresponding path in the dist folder where it should be placed during build
         const digest = hash.digest('base64').substring(0, 10).replace('/', '_')
@@ -261,12 +255,3 @@ export const og = (): AstroIntegration => ({
     }
   }
 })
-
-async function stream2Buffer(stream: Readable): Promise<Buffer> {
-  return new Promise<Buffer>((resolve, reject) => {
-    const _buf = Array<any>();
-    stream.on("data", chunk => _buf.push(chunk));
-    stream.on("end", () => resolve(Buffer.concat(_buf)));
-    stream.on("error", err => reject(`error converting stream - ${err}`));
-  });
-} 
