@@ -14,7 +14,7 @@
   "dependencies": {
     "@astrojs/check": "^0.9.3",
     "@types/bun": "^1.1.10",
-    "astro": "^4.15.9",
+    "astro": "^4.15.10",
     "typescript": "^5.6.2"
   },
   "devDependencies": {
@@ -24,15 +24,15 @@
     "@astrojs/sitemap": "^3.1.6",
     "@astrojs/tailwind": "^5.1.1",
     "@astrojs/ts-plugin": "^1.10.2",
-    "@cloudflare/workers-types": "^4.20240919.0",
-    "@deck.gl/layers": "^9.0.30",
-    "@deck.gl/mapbox": "^9.0.30",
+    "@cloudflare/workers-types": "^4.20240925.0",
+    "@deck.gl/layers": "^9.0.32",
+    "@deck.gl/mapbox": "^9.0.32",
     "@eslint/js": "^9.11.1",
     "@iconify-json/mdi": "^1.2.0",
     "@react-email/components": "0.0.22",
     "@react-email/render": "^0.0.17",
     "@resvg/resvg-wasm": "^2.6.2",
-    "@rive-app/canvas-single": "^2.21.3",
+    "@rive-app/canvas-single": "^2.21.5",
     "@silvia-odwyer/photon-node": "^0.3.3",
     "@svgr/core": "^8.1.0",
     "@svgr/plugin-jsx": "^8.1.0",
@@ -40,9 +40,9 @@
     "@tailwindcss/typography": "^0.5.15",
     "@types/canvas-confetti": "^1.6.4",
     "@types/eslint__js": "^8.42.3",
-    "@types/react": "^18.3.8",
+    "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.0",
-    "@typescript-eslint/parser": "^8.7.0",
+    "@typescript-eslint/parser": "^8.8.0",
     "astro-pagefind": "^1.6.0",
     "canvas-confetti": "^1.9.3",
     "debug": "^4.3.7",
@@ -59,7 +59,7 @@
     "prettier": "^3.3.3",
     "prettier-config-standard": "^7.0.0",
     "prettier-plugin-astro": "^0.14.1",
-    "prettier-plugin-tailwindcss": "^0.6.6",
+    "prettier-plugin-tailwindcss": "^0.6.8",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-email": "2.1.6",
@@ -71,8 +71,8 @@
     "sharp": "^0.33.5",
     "tailwindcss": "^3.4.13",
     "tsx": "^4.19.1",
-    "typescript-eslint": "^8.7.0",
+    "typescript-eslint": "^8.8.0",
     "unplugin-icons": "^0.19.3",
-    "wrangler": "^3.78.8"
+    "wrangler": "^3.79.0"
   }
 }

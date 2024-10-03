@@ -219,17 +219,11 @@ export const og = (): AstroIntegration => ({
         const imageHandle = await open(ogImage, 'r')
         const imageStream = imageHandle.createReadStream()
 
-        const temp = performance.now()
-
         const bufferStream = new PassThrough()
         imageStream.pipe(hash)
         imageStream.pipe(bufferStream)
 
         const coverImage = await stream2Buffer(bufferStream)
-
-        const tempEnd = performance.now()
-
-        logger.info(`/${pathname} \x1b[90m (+${(tempEnd - temp).toFixed(0)}ms)\x1b[0m`)
 
         // Compute the cached file path and the corresponding path in the dist folder where it should be placed during build
         const digest = hash.digest('base64').substring(0, 10).replace('/', '_')
